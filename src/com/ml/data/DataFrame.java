@@ -3,9 +3,8 @@ package com.ml.data;
 import com.ml.io.InvalidDataFrameFormatException;
 
 import javax.xml.crypto.Data;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataFrame {
 
@@ -24,6 +23,11 @@ public class DataFrame {
         this.delim = delim;
         this.headers = new ArrayList<>();
         this.data = new ArrayList<>();
+    }
+
+    public DataFrame (String delim, List<List<String>> data) {
+        this.delim = delim;
+        this.data = data;
     }
 
 
@@ -139,6 +143,39 @@ public class DataFrame {
             System.out.println(data.get(i));
         }
 
+    }
+
+
+    public List<DataFrame> split (String attribute) throws DataFrameIndexOutOfBoundsException {
+        if (!headers.contains(attribute)) {
+            throw new DataFrameIndexOutOfBoundsException();
+        }
+
+//        Map<String, List<Integer>> splitMap = new TreeMap<>();
+//
+//        List<String> attributeCol = this.getColumn(attribute);
+//        for (int i = 0; i < attributeCol.size(); i++) {
+//            if (!splitMap.containsKey(attributeCol.get(i))) {
+//                splitMap.put(attributeCol.get(i), new ArrayList<>(i));
+//            } else {
+//                List<Integer> rowList = splitMap.get(attributeCol.get(i));
+//                rowList.add(i);
+//                splitMap.put(attributeCol.get(i), rowList);
+//            }
+//        }
+
+
+        List<DataFrame> splitList = new ArrayList<>();
+
+        for (String val : new HashSet<>(this.getColumn(attribute))) {
+            splitList.add(new DataFrame(this.delim, this.getData().stream().filter(row -> row.get(colIndexFromName(attribute)).equals(val)).collect(Collectors.toList())));
+        }
+
+        return splitList;
+    }
+
+    public int colIndexFromName (String colName) {
+        return headers.indexOf(colName);
     }
 
 
