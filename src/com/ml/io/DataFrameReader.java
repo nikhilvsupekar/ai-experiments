@@ -13,6 +13,9 @@ import java.util.List;
 public class DataFrameReader {
 
     public static DataFrame readDataFrame (String filePath, String delim) {
+        String rawDelim = delim;
+        delim += "(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
+
         DataFrame df = new DataFrame(delim);
         int colCount = 0;
         int rowCount = 0;
@@ -27,7 +30,7 @@ public class DataFrameReader {
             while ((line = br.readLine()) != null) {
 
                 if (rowCount == 0) {
-                    if (!line.contains(delim)) {
+                    if (!line.contains(rawDelim)) {
                         colCount = 1;
                         headers.add(line);
                     } else {
