@@ -179,6 +179,21 @@ public class DataFrame {
     }
 
 
+    public Map<String, Integer> table (String attribute) throws DataFrameIndexOutOfBoundsException {
+        Map<String, Integer> tableMap = new TreeMap<>();
+
+        this.getColumn(attribute).forEach(v -> {
+            if (!tableMap.containsKey(v)) {
+                tableMap.put(v, 1);
+            } else {
+                tableMap.put(v, tableMap.get(v) + 1);
+            }
+        });
+
+        return tableMap;
+    }
+
+
     public List<String> getHeaders() {
         return headers;
     }
