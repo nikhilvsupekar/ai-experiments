@@ -168,10 +168,23 @@ public class DataFrame {
         List<DataFrame> splitList = new ArrayList<>();
 
         for (String val : new HashSet<>(this.getColumn(attribute))) {
-            splitList.add(new DataFrame(this.delim, this.getData().stream().filter(row -> row.get(colIndexFromName(attribute)).equals(val)).collect(Collectors.toList())));
+            DataFrame d = new DataFrame(this.delim, this.getData().stream().filter(row -> row.get(colIndexFromName(attribute)).equals(val)).collect(Collectors.toList()));
+            d.setHeaders(headers);
+            splitList.add(d);
         }
 
         return splitList;
+    }
+
+
+    public DataFrame subset (String attribute, String value) throws DataFrameIndexOutOfBoundsException {
+        for (DataFrame splitFrame : split(attribute)) {
+            if (splitFrame.getColumn(attribute).get(0).equals(value)) {
+                return splitFrame;
+            }
+        }
+
+        return null;
     }
 
     public int colIndexFromName (String colName) {

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Metrics {
 
-    public double entropy (DataFrame df, String attribute) throws DataFrameIndexOutOfBoundsException {
+    public static double entropy (DataFrame df, String attribute) throws DataFrameIndexOutOfBoundsException {
 //        List<String> attributeCol = df.getColumn(attribute);
 //        Map<String, Integer> targetFrequencyMap = new HashMap<>();
 //
@@ -37,7 +37,7 @@ public class Metrics {
 
 
 
-    public double informationGain (DataFrame df, String attribute, String target) throws DataFrameIndexOutOfBoundsException {
+    public static double informationGain (DataFrame df, String attribute, String target) throws DataFrameIndexOutOfBoundsException {
 
         double informationGainVal = entropy(df, target);
 
