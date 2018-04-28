@@ -2,7 +2,6 @@ package com.ml.data;
 
 import com.ml.io.InvalidDataFrameFormatException;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -102,6 +101,10 @@ public class DataFrame {
         }
     }
 
+    public void dropColumn (String colName) throws DataFrameIndexOutOfBoundsException {
+        dropColumn(getColumnIndex(colName));
+    }
+
     public void addColumn (String colName, List<String> colValues) throws InvalidDataFrameFormatException {
 
         if (colValues.size() != getNumRows()) {
@@ -168,7 +171,7 @@ public class DataFrame {
         List<DataFrame> splitList = new ArrayList<>();
 
         for (String val : new HashSet<>(this.getColumn(attribute))) {
-            DataFrame d = new DataFrame(this.delim, this.getData().stream().filter(row -> row.get(colIndexFromName(attribute)).equals(val)).collect(Collectors.toList()));
+            DataFrame d = new DataFrame(this.delim, this.getData().stream().filter(row -> row.get(getColumnIndex(attribute)).equals(val)).collect(Collectors.toList()));
             d.setHeaders(headers);
             splitList.add(d);
         }
@@ -187,7 +190,7 @@ public class DataFrame {
         return null;
     }
 
-    public int colIndexFromName (String colName) {
+    public int getColumnIndex(String colName) {
         return headers.indexOf(colName);
     }
 
