@@ -36,6 +36,8 @@ public class ID3Driver {
 
         DecisionTreeNode node = ID3.buildDecisionTree(df, "Survived", attributes);
 
+        node.print(0);
+
         System.out.println("done");
     }
 }
