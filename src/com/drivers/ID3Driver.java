@@ -20,6 +20,7 @@ public class ID3Driver {
         df.dropColumn("Name");
         df.dropColumn("Ticket");
         df.dropColumn("Cabin");
+        df.dropColumn("Fare");
 
 
         List<String> attributes = new ArrayList<>(df.getHeaders());
