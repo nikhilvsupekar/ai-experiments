@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 
 public class PreProcessor {
 
-    DataFrame dropEmptyColumnsByThreshold (DataFrame df, double threshold) throws DataFrameIndexOutOfBoundsException {
+    DataFrame dropEmptyColumnsByThreshold (DataFrame df, double threshold)
+            throws DataFrameIndexOutOfBoundsException {
         for (String column : df.getHeaders()) {
             if (df.getColumn(column).stream().filter(v -> v.equals("")).count() * 1.0 / df.getNumRows() * 100 > threshold) {
                 df.dropColumn(column);
@@ -21,19 +22,26 @@ public class PreProcessor {
         return df;
     }
 
-    DataFrame convertColumnToRange (DataFrame df, String column) throws DataFrameIndexOutOfBoundsException, NumberFormatException{
+    public static DataFrame convertColumnToRange (DataFrame df, String column)
+            throws DataFrameIndexOutOfBoundsException, NumberFormatException{
         List<String> colValues = df.getColumn(column);
         Map<Pair, Integer> rangeMap = buildRangeMap(colValues, 30, 5);
         List<String> convertedColValues = new ArrayList<>();
 
         for (int i = 0; i < colValues.size(); i++) {
             String val = colValues.get(i);
+            boolean flag = false;
             for (Map.Entry e : rangeMap.entrySet()) {
                 if (Double.parseDouble(val) >= (Double)((Pair)e.getKey()).getKey() &&
-                        Double.parseDouble(val) >= (Double)((Pair)e.getKey()).getValue()) {
+                        Double.parseDouble(val) <= (Double)((Pair)e.getKey()).getValue()) {
                     convertedColValues.add((e.getValue()).toString());
+                    flag = true;
                     break;
                 }
+            }
+
+            if (!flag) {
+                convertedColValues.add("0");
             }
         }
 
@@ -42,7 +50,9 @@ public class PreProcessor {
         return df;
     }
 
-    private Map<Pair, Integer> buildRangeMap (List<String> column, Integer uniqCountThreshold, Integer numIntervals) {
+    private static Map<Pair, Integer> buildRangeMap (List<String> column,
+                                                     Integer uniqCountThreshold,
+                                                     Integer numIntervals) {
         Set<Double> values = new HashSet<>();
         Map<Pair, Integer> rangeMap = new HashMap<>();
 
@@ -66,5 +76,21 @@ public class PreProcessor {
         }
 
         return rangeMap;
+    }
+
+
+    public static DataFrame replaceEmptyValues (DataFrame df, String columnName, String defaultString)
+            throws DataFrameIndexOutOfBoundsException {
+        List<String> column = df.getColumn(columnName);
+
+        for (int i = 0; i < column.size(); i++) {
+            if (column.get(i).equals("")) {
+                column.set(i, defaultString);
+            }
+        }
+
+        df.setColumn(columnName, column);
+
+        return df;
     }
 }
