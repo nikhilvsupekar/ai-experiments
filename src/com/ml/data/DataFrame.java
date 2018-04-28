@@ -80,6 +80,14 @@ public class DataFrame {
         return data.get(i);
     }
 
+    public void setColumn (String colName, List<String> colValues) throws DataFrameIndexOutOfBoundsException {
+        int colIndex = getColumnIndex(colName);
+
+        for (int i = 0; i < getNumRows(); i++) {
+            getRow(i).set(colIndex, colValues.get(i));
+        }
+    }
+
 
     public void dropRow (int i) throws DataFrameIndexOutOfBoundsException {
         if (i >= getNumRows()) {
