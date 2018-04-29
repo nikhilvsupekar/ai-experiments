@@ -7,8 +7,24 @@ import com.structures.DecisionTreeNode;
 
 import java.util.*;
 
+/**
+ * A basic implementation of the Iterative Dichotomizer.
+ * Used in constructing Decision Trees.
+ *
+ * @author  Nikhil Supekar
+ */
 public class ID3 {
 
+    /**
+     * recursively builds decision tree from the data frame, target column and the list of attributes
+     *
+     *
+     * @param df            data frame representing the data to build the decision tree upon
+     * @param target        target column to classify the instances upon
+     * @param attributes    list of attributes to use to build the Decision Tree
+     * @return              Decision Tree Node of the fully constructed decision below this level
+     * @throws DataFrameIndexOutOfBoundsException
+     */
     public static DecisionTreeNode buildDecisionTree (DataFrame df, String target, List<String> attributes) throws DataFrameIndexOutOfBoundsException {
         DecisionTreeNode node = new DecisionTreeNode();
 
@@ -43,6 +59,15 @@ public class ID3 {
         return node;
     }
 
+
+    /**
+     * given a data frame and a column, find the most common value the column takes
+     *
+     * @param df        data frame representing the data
+     * @param target    the target column
+     * @return          Value of the most commonly occurring value of the target column
+     * @throws DataFrameIndexOutOfBoundsException
+     */
     private static String getMostCommonTargetValue (DataFrame df, String target) throws DataFrameIndexOutOfBoundsException {
         Map<String, Integer> t = df.table(target);
 
@@ -56,6 +81,15 @@ public class ID3 {
         return maxEntry.getKey();
     }
 
+    /**
+     * get the best attribute to classify the instances at some point of building the decision tree
+     *
+     * @param df            data frame representing the data
+     * @param target        the target column
+     * @param attributes    list of column attributes to consider for finding the best classifying attribute
+     * @return
+     * @throws DataFrameIndexOutOfBoundsException
+     */
     public static String getBestClassifier (DataFrame df, String target, List<String> attributes) throws DataFrameIndexOutOfBoundsException {
         String bestAttribute = "";
         double maxMetric = -1;

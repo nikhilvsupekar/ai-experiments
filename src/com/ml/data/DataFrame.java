@@ -5,6 +5,13 @@ import com.ml.io.InvalidDataFrameFormatException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A row based implementation of the data frame.
+ * Mostly done for understanding what it takes to build a ML platform.
+ *
+ *
+ * @author  Nikhil Supekar
+ */
 public class DataFrame {
 
     private String delim;
