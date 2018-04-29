@@ -3,6 +3,7 @@ package com.drivers;
 import com.ml.algorithms.classification.ID3;
 import com.ml.data.DataFrame;
 import com.ml.data.DataFrameIndexOutOfBoundsException;
+import com.ml.data.processor.PreProcessor;
 import com.ml.io.DataFrameReader;
 import com.structures.DecisionTreeNode;
 
@@ -20,11 +21,22 @@ public class ID3Driver {
         df.dropColumn("Name");
         df.dropColumn("Ticket");
         df.dropColumn("Cabin");
+//        df.dropColumn("Fare");
 
 
         List<String> attributes = new ArrayList<>(df.getHeaders());
         attributes.remove("Survived");
+
+
+        df = PreProcessor.replaceEmptyValues(df, "Age", "0");
+        df = PreProcessor.replaceEmptyValues(df, "Fare", "0");
+
+        df = PreProcessor.convertColumnToRange(df, "Age");
+        df = PreProcessor.convertColumnToRange(df, "Fare");
+
         DecisionTreeNode node = ID3.buildDecisionTree(df, "Survived", attributes);
+
+        node.print(0);
 
         System.out.println("done");
     }

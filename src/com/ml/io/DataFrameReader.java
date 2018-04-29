@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Read a delimited file into a data frame
+ *
+ * @author Nikhil Supekar
+ */
 public class DataFrameReader {
 
     public static DataFrame readDataFrame (String filePath, String delim) {
