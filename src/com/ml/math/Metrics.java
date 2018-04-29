@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Metrics used in ML algorithms.
+ * This is the class where most of the experimentation should happen.
+ * Try to replace functions like entropy with other functions having similar geometric properties.
+ *
+ * @author Nikhil Supekar
+ */
 public class Metrics {
 
     public static double entropy (DataFrame df, String attribute) throws DataFrameIndexOutOfBoundsException {
